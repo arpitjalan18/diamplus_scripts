@@ -44,7 +44,7 @@ with open('UploadNivodaLabGrown2.csv', 'w', newline='') as csvfile:
 with FTP("ftp.nivoda.net") as ftp:
     ftp.login(user="diamplusinc", passwd="m2w]4q2s") 
     file = open('UploadNivodaLabGrown2.csv', 'rb')
-    FTP.sendcmd("cd /")
+    ftp.cwd("/")
     ftp.storbinary("STOR stocklist.csv", file)
     file.close()
     ftp.quit()
