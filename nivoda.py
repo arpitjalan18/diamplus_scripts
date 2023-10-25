@@ -4,7 +4,7 @@ from ftplib import FTP
 
 origs = []
 
-with open('UploadNivodaLabGrown.csv', newline='') as csvfile:
+with open('../Nivoda/UploadNivodaLabGrown.csv', newline='') as csvfile:
   spamreader = csv.reader(csvfile, delimiter=',')
   for row in spamreader:
     origs.append(row.copy())
