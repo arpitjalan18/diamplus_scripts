@@ -21,14 +21,15 @@ for row in origs:
     first_line = False
   else:
     vid_link = row[index_vid]
-    res = urlparse(vid_link)
-   
-    path_parts = res.path.split('/')
-    path_parts[3] = "still.jpg"
-    new_path = '/'.join(path_parts)
-    img_link = urlunparse((res.scheme, res.netloc, new_path) + res[3:])
-   
-    row[index_image] = img_link
+
+    if "https://mycertdiamvids.com/Videos" in vid_link:
+      res = urlparse(vid_link)
+      path_parts = res.path.split('/')
+      if len(path_parts) > 3:
+        path_parts[3] = "still.jpg"
+      new_path = '/'.join(path_parts)
+      img_link = urlunparse((res.scheme, res.netloc, new_path) + res[3:])
+      row[index_image] = img_link
 
     if row[index_lab] == "IGI LG":
       row[index_lab] = "IGI"
@@ -39,7 +40,7 @@ with open('UploadNivodaLabGrown2.csv', 'w', newline='') as csvfile:
   first_line = True
   for fin in origs:
     spamwriter.writerow(fin)
-
+    
 with FTP("ftp.nivoda.net") as ftp:
     ftp.login(user="diamplusinc", passwd="m2w]4q2s") 
     file = open('UploadNivodaLabGrown2.csv', 'rb', newline='')
