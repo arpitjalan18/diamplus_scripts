@@ -3,7 +3,7 @@ from urllib.parse import urlparse, urlunparse
 from ftplib import FTP
 origs = []
 
-with open('UploadVDBLabGrown.csv', newline='') as csvfile:
+with open('../VDB/UploadVDBLabGrown.csv', newline='') as csvfile:
   spamreader = csv.reader(csvfile, delimiter=',')
   for row in spamreader:
     origs.append(row.copy())
@@ -52,7 +52,13 @@ with open('UploadVDBLabGrown2.csv', 'w', newline='') as csvfile:
   for fin in origs:
     spamwriter.writerow(fin)
 
+print("Sucesfully created file to upload, trying FTP now ...")
 
-with FTP("ftp1.at.proftpd.org") as ftp:
-    ftp.login()
+with FTP("ftp.vdbapp.com", "diamplus_inc@yahoo.com", "Diamplus@2023") as ftp:
+    print("succesful login to ftp server")
     ftp.dir()
+    ftp.cwd('/Vendors/DPI/LabGrownDiamond')
+    with open('UploadVDBLabGrown2.csv', 'rb') as file_upload:
+      ftp.storbinary(f"STOR {lab_grown_vdb.csv}", file_upload)
+    ftp.dir()
+    ftp.quit()

@@ -1,6 +1,7 @@
 import csv
 from urllib.parse import urlparse, urlunparse
 from ftplib import FTP
+import shutil
 
 origs = []
 
@@ -49,10 +50,14 @@ with open('UploadNivodaLabGrown2.csv', 'w', newline='') as csvfile:
   for fin in origs:
     spamwriter.writerow(fin)
     
+print("CSV succesfully generated, trying FTP upload now ...")
 with FTP("ftp.nivoda.net") as ftp:
     ftp.login(user="diamplusinc", passwd="m2w]4q2s") 
-    file = open('UploadNivodaLabGrown2.csv', 'rb')
-    ftp.cwd("/")
-    ftp.storbinary("STOR stocklist.csv", file)
-    file.close()
+    ftp.dir()
+    with open('UploadNivodaLabGrown2.csv', 'rb') as file_upload:
+      ftp.storbinary("STOR stocklist.csv", file_upload)
+      file_upload.close()
+    ftp.dir()
     ftp.quit()
+
+print("Nivoda FTP done")
