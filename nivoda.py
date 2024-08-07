@@ -30,6 +30,14 @@ for row in origs:
       new_path = '/'.join(path_parts)
       img_link = urlunparse((res.scheme, res.netloc, new_path) + res[3:])
       row[index_image] = img_link
+    elif len(vid_link) > 0:
+      res = urlparse(vid_link)
+      path_parts = res.path.split('/')
+      if len(path_parts) > 2:
+        path_parts[2] = "still.jpg"
+      new_path = '/'.join(path_parts)
+      img_link = urlunparse((res.scheme, res.netloc, new_path) + res[3:])
+      row[index_image] = img_link
 
     if row[index_lab] == "IGI LG":
       row[index_lab] = "IGI"

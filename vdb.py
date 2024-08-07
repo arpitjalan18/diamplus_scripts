@@ -22,6 +22,7 @@ for row in origs:
     index_cert_number = row.index(" Certificate #")
     index_cert_url = row.index(" Certificate Url")
     index_member_comments = row.index(" Member Comments")
+    index_lab = row.index(" Lab")
     
     first_line = False
   else:
@@ -29,7 +30,7 @@ for row in origs:
     res = urlparse(vid_link)
    
     path_parts = res.path.split('/')
-    path_parts[3] = "still.jpg"
+    path_parts[-1] = "still.jpg"
     new_path = '/'.join(path_parts)
     img_link = urlunparse((res.scheme, res.netloc, new_path) + res[3:])
    
@@ -39,6 +40,10 @@ for row in origs:
     row[index_cert_url] = "https://www.igi.org/viewpdf.php?r=%s" % cert_number
 
     row[index_member_comments] = "Do not have different prices for Memo and COD"
+
+    #change lab
+    if index_lab >= 0 and row[index_lab] == "IGI LG":
+      row[index_lab] = "IGI"
     
 
 with open('UploadVDBLabGrown2.csv', 'w', newline='') as csvfile:
