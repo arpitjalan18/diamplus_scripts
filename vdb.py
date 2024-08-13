@@ -3,6 +3,8 @@ from urllib.parse import urlparse, urlunparse
 from ftplib import FTP
 origs = []
 
+import paramiko
+
 with open('../VDB/UploadVDBLabGrown.csv', newline='') as csvfile:
   spamreader = csv.reader(csvfile, delimiter=',')
   for row in spamreader:
@@ -54,11 +56,11 @@ with open('UploadVDBLabGrown2.csv', 'w', newline='') as csvfile:
 
 print("Sucesfully created file to upload, trying FTP now ...")
 
-with FTP("ftp.vdbapp.com", "diamplus_inc@yahoo.com", "Diamplus@2023") as ftp:
-    print("succesful login to ftp server")
-    ftp.dir()
-    ftp.cwd('/Vendors/DPI/LabGrownDiamond')
-    with open('UploadVDBLabGrown2.csv', 'rb') as file_upload:
-      ftp.storbinary(f"STOR {lab_grown_vdb.csv}", file_upload)
-    ftp.dir()
-    ftp.quit()
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+#key = paramiko.RSAKey.from_private_key_file('vdb_pem_key.pem')
+ssh.connect('ftphost.vdbapp.com', username='diamplus_inc@yahoo.com', password = 'VdbFTP@2024')#, pkey=key)
+print("succesful login to sftp server")
+sftp = ssh.open_sftp()
+sftp.put('UploadVDBLabGrown2.csv', '/Root Folder')
+print('success')
